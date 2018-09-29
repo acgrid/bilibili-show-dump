@@ -1,12 +1,6 @@
 import utils
-from openpyxl.utils import get_column_letter
 import os
 import re
-
-
-def set_columns_width(sheet, columns_width):
-    for index, width in enumerate(columns_width):
-        sheet.column_dimensions[get_column_letter(index + 1)].width = width
 
 
 class ShowReader:
@@ -78,8 +72,7 @@ class Reporter:
         dir_list = os.listdir(self.path)
         reader = ShowReader()
         workbook, sheet = utils.make_workbook()
-        set_columns_width(sheet, [6, 25, 25, 25, 8, 8, 8,
-                                  15, 10, 8, 8, 8, 8])
+        utils.set_columns_width(sheet, [6, 25, 25, 25, 8, 8, 8, 15, 10, 8, 8, 8, 8, 8, 8])
         sheet.append(['ID', '名称', '开始时间', '结束时间', '省级', '地级', '县级',
                       '场馆', '场馆号', '嘉宾数', '想去数', '起价', '止价'])
         for show_id in dir_list:
