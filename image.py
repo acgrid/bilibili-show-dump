@@ -27,7 +27,7 @@ class DownloadThread(threading.Thread):
             print('Skipping ' + filename)
             return
         if image.startswith('//'):
-            image = "https:" + image
+            image = "http:" + image
         resp = utils.requests_retry_session().get(image)
         with open(local, 'wb') as f:
             f.write(resp.content)
