@@ -48,11 +48,21 @@ class ShowReader:
     def wish_count(self):
         return self.data.get('wish_info', {}).get('count')
 
+    def tickets_price(self):
+        prices = list(map(lambda ticket: ticket.price / 100, self.data.get('ticket_list', [])))
+        return (min(prices), max(prices)) if len(prices) else (0, 0)
+
     def market_price_low(self):
         return self.data.get('market_price_low', 0) / 100
 
     def market_price_high(self):
         return self.data.get('market_price_high', 0) / 100
+
+    def price_low(self):
+        return self.data.get('price_low', 0) / 100
+
+    def price_high(self):
+        return self.data.get('price_high', 0) / 100
 
     def cover(self):
         return self.data.get('cover')
@@ -74,13 +84,15 @@ class Reporter:
         workbook, sheet = utils.make_workbook()
         utils.set_columns_width(sheet, [6, 25, 25, 25, 8, 8, 8, 15, 10, 8, 8, 8, 8, 8, 8])
         sheet.append(['ID', '名称', '开始时间', '结束时间', '省级', '地级', '县级',
-                      '场馆', '场馆号', '嘉宾数', '想去数', '起价', '止价'])
+                      '场馆', '场馆号', '嘉宾数', '想去数', '起价', '止价', '市场起价', '市场止价'])
         for show_id in dir_list:
             reader.load(utils.get_json_file('{}/{}/index.json'.format(self.path, show_id)))
+            prices = reader.tickets_price()
             sheet.append([
                 reader.id(), reader.name(), reader.start_time(), reader.end_time(),
                 reader.province(), reader.city(), reader.district(), reader.venue_name(), reader.venue_info(),
-                reader.guest_count(), reader.wish_count(), reader.market_price_low(), reader.market_price_high()])
+                reader.guest_count(), reader.wish_count(), prices[0], prices[1],
+                reader.market_price_low(), reader.market_price_high()])
         utils.save_workbook(workbook, 'Report.xlsx')
 
 
