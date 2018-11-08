@@ -57,7 +57,11 @@ class Reporter:
         sheet.append(['ID', '名称', '开始时间', '结束时间', '省级', '地级', '县级',
                       '场馆', '星级', '嘉宾数', '去过数', '现场票价', '电子票价'])
         for file in files:
-            reader.load(utils.get_json_file('{}/{}'.format(self.path, file)))
+            path = '{}/{}'.format(self.path, file)
+            try:
+                reader.load(utils.get_json_file(path))
+            except UnicodeDecodeError:
+                reader.load(utils.get_file(path, str))
             location = reader.location()
             location += [''] * (4 - len(location))
             sheet.append([
