@@ -38,7 +38,7 @@ def save_json(path, data):
 
 def save_file(path, data):
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    f = open(path, 'w')
+    f = open(path, 'w', encoding='utf-8')
     f.write(data)
     f.close()
 
@@ -52,7 +52,7 @@ def get_json_file(data_file, data_type=dict):
 
 def get_file(data_file, data_type=dict):
     try:
-        return open(data_file, 'r').read()
+        return open(data_file, 'r', encoding="utf-8").read()
     except OSError:
         return data_type()
 
