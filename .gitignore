@@ -3,4 +3,7 @@ nyato/
 *.xlsx
 /.idea
 *.pyc
+*.rar
+*.zip
 venv
+/__pycache__
